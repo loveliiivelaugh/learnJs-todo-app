@@ -1,8 +1,8 @@
-  let express = require('express')
-  let mongodb = require('mongodb')
-  let sanitizeHTML = require('sanitize-html')
+let express = require('express')
+let mongodb = require('mongodb')
+let sanitizeHTML = require('sanitize-html')
 
-  let app = express()
+let app = express()
 let db
 
 let port = process.env.PORT 
@@ -12,7 +12,7 @@ if (port == null || port == "") {
 
 app.use(express.static('public'))
 
-let connectionString = 'mongodb+srv://todoAppUser:lifizgr8@cluster0-fwagj.mongodb.net/TodoApp?retryWrites=true&w=majority'
+let connectionString = 'Your_MongoDB_Connection_String_Goes_Here'
 mongodb.connect(connectionString, {useNewUrlParser: true}, function(err, client){
   db = client.db()
   app.listen(port)
@@ -75,14 +75,14 @@ app.get('/', function(req, res){
     )
     })
     
-})
-app.post('/create-item', function(req, res) {
-    let safeText = sanitizeHTML(req.body.text, {allowedTags: [], allowedAttributes: {}})
-    db.collection('items').insertOne({text: safeText}, function(err, info) {
-      res.json(info.ops[0])
+    app.post('/create-item', function(req, res) {
+        let safeText = sanitizeHTML(req.body.text, {allowedTags: [], allowedAttributes: {}})
+        db.collection('items').insertOne({text: safeText}, function(err, info) {
+          res.json(info.ops[0])
+        })
+        // console.log(req.body.item)
+        
     })
-    // console.log(req.body.item)
-    
 })
 
 
